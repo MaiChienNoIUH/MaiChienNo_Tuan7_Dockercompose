@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách các môn học</title>
+    <style>
+        table,
+        th,
+        td {
+            border-collapse: collapse;
+            border: 1px solid black;
+            text-align: center;
+        }
+        
+        table {
+            width: 100%;
+        }
+        
+        input {
+            width: 100%;
+            margin-bottom: 6px;
+        }
+        
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <form action="/add" method="POST" enctype="multipart/form-data">
+            <input type="text" name="maBaiBao" required placeholder="Nhập mã bài báo"> <br/>
+            <input type="text" name="tenBaiBao" required placeholder="Nhập tên bài báo"> <br/>
+            <input type="text" name="tenTacGia" required placeholder="Nhập tên tác giả"> <br/>
+            <input type="text" name="chiSoISBN" required placeholder="Nhập chỉ số ISBN"> <br/>
+            <input type="text" name="soTrang" required placeholder="Nhập số trang"> <br/>
+            <input type="text" name="namXuatBan" required placeholder="Nhập năm xuất bản"> <br/>
+            <input type="file" name="image" accept="image/*" required> <br/>
+            <button type="submit">Thêm bài báo</button>
+        </form>
+
+        <h1 style="text-align: center;">Danh sách các môn học</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Tên bài báo</th>
+                    <th>Tên tác giả</th>
+                    <th>Chỉ số ISBN</th>
+                    <th>Số trang</th>
+                    <th>Năm xuất bản</th>
+                    <th>Hình ảnh của báo</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% BaiBao.forEach(function(a, index) { %>
+                    <tr>
+                        <td>
+                            <%= index + 1 %>
+                        </td>
+                        <td>
+                            <%= a.tenBaiBao %>
+                        </td>
+                        <td>
+                            <%= a.tenTacGia %>
+                        </td>
+                        <td>
+                            <%= a.chiSoISBN %>
+                        </td>
+                        <td>
+                            <%= a.soTrang %>
+                        </td>
+                        <td>
+                            <%= a.namXuatBan %>
+                        </td>
+                        <td>
+                            <img src="<%= a.imageUrl %>" alt="Image" width="100">
+                        </td>
+                        <td>
+                            <form action="/delete-course" method="POST" style="display:inline;">
+                                <input type="hidden" name="maBaiBao" value="<%= a.maBaiBao %>">
+                                <button type="submit" style="color: red;">Xóa</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% }); %>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
