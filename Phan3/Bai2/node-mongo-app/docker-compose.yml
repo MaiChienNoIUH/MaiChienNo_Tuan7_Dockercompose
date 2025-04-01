@@ -1,0 +1,40 @@
+version: '3.8'
+
+networks:
+  mongo-network:
+
+volumes:
+  mongo_data:
+
+services:
+  mongo:
+    image: mongo:latest
+    restart: always
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - mongo-network
+
+  node-app:
+    build: .
+    depends_on:
+      mongo:
+        condition: service_healthy
+    environment:
+      - NODE_ENV=development
+    ports:
+      - "3000:3000"
+    networks:
+      - mongo-network
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    depends_on:
+      - mongo
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongo
+    ports:
+      - "8081:8081"
+    networks:
+      - mongo-network
