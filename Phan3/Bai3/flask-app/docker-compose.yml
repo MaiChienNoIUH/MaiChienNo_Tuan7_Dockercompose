@@ -1,0 +1,27 @@
+version: '3.8'
+
+networks:
+  flask-network:
+
+services:
+  flask1:
+    build: .
+    networks:
+      - flask-network
+
+  flask2:
+    build: .
+    networks:
+      - flask-network
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "8080:80"
+    depends_on:
+      - flask1
+      - flask2
+    networks:
+      - flask-network
